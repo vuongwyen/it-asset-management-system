@@ -19,6 +19,8 @@ class Asset extends Model
         'purchase_date',
         'purchase_cost',
         'image',
+        'assigned_to',
+        'assigned_type', // Thêm cột này
     ];
 
     public function model()
@@ -34,6 +36,11 @@ class Asset extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
+    }
+
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 
     public function assetHistories()

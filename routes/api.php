@@ -18,4 +18,10 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('manufacturers', ManufacturerController::class);
     Route::apiResource('departments', DepartmentController::class);
     Route::apiResource('status-labels', StatusLabelController::class);
+    Route::apiResource('assets', \App\Http\Controllers\Api\AssetController::class);
+    Route::apiResource('users', \App\Http\Controllers\Api\UserController::class);
+
+    // Asset Transactions
+    Route::post('assets/checkout', [\App\Http\Controllers\Api\AssetTransactionController::class, 'checkout']);
+    Route::post('assets/checkin', [\App\Http\Controllers\Api\AssetTransactionController::class, 'checkin']);
 });

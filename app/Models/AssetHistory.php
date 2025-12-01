@@ -12,8 +12,8 @@ class AssetHistory extends Model
     protected $fillable = [
         'asset_id',
         'user_id',
-        'action_type', // checkout, checkin, audit, etc.
-        'notes',
+        'action_type', // checkout, checkin, audit...
+        'note', // Đảm bảo dùng 'note' thay vì 'notes'
     ];
 
     public function asset()
