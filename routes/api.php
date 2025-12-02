@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\StatusLabelController;
 use App\Http\Controllers\Api\AssetTransactionController;
 use App\Http\Controllers\Api\MaintenanceController;
+use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,9 +27,13 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('manufacturers', ManufacturerController::class);
         Route::apiResource('departments', DepartmentController::class);
         Route::apiResource('status-labels', StatusLabelController::class);
+        Route::apiResource('users', UserController::class);
 
         // Assets
         Route::apiResource('assets', AssetController::class);
+
+        // Dashboard Stats
+        Route::get('dashboard-stats', [DashboardController::class, 'stats']);
 
         // Asset Transactions
         Route::post('assets/checkout', [AssetTransactionController::class, 'checkout']);
