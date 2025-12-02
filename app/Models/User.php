@@ -65,4 +65,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Asset::class); // Tài sản đang giữ
     }
+
+    /**
+     * Get the user's initials.
+     */
+    public function initials(): string
+    {
+        return collect(explode(' ', $this->name))
+            ->map(fn($segment) => mb_substr($segment, 0, 1))
+            ->take(2)
+            ->join('');
+    }
 }
