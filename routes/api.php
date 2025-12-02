@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\ManufacturerController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\StatusLabelController;
+use App\Http\Controllers\Api\AssetTransactionController;
+use App\Http\Controllers\Api\MaintenanceController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -24,4 +26,6 @@ Route::prefix('v1')->group(function () {
     // Asset Transactions
     Route::post('assets/checkout', [\App\Http\Controllers\Api\AssetTransactionController::class, 'checkout']);
     Route::post('assets/checkin', [\App\Http\Controllers\Api\AssetTransactionController::class, 'checkin']);
+
+    Route::apiResource('maintenances', MaintenanceController::class);
 });

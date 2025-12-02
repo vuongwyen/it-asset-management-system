@@ -12,7 +12,6 @@ class Maintenance extends Model
     protected $fillable = [
         'asset_id',
         'supplier_id',
-        'type', // repair, upgrade, test
         'start_date',
         'completion_date',
         'notes',
