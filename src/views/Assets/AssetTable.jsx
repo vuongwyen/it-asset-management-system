@@ -4,6 +4,8 @@ import axiosClient from "../../axios-client";
 import StatusBadge from "./StatusBadge";
 import useDebounce from "../../hooks/useDebounce";
 import AssetModal from "./AssetModal";
+import CheckoutModal from "./CheckoutModal";
+import CheckinModal from "./CheckinModal";
 
 export default function AssetTable() {
     const [assets, setAssets] = useState([]);
@@ -13,6 +15,10 @@ export default function AssetTable() {
     // Modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState(null);
+
+    const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+    const [isCheckinOpen, setIsCheckinOpen] = useState(false);
+    const [transactionAsset, setTransactionAsset] = useState(null);
 
     // Filters state
     const [filters, setFilters] = useState({
@@ -88,8 +94,20 @@ export default function AssetTable() {
         setIsModalOpen(true);
     };
 
+    const openCheckoutModal = (asset) => {
+        setTransactionAsset(asset);
+        setIsCheckoutOpen(true);
+    };
+
+    const openCheckinModal = (asset) => {
+        setTransactionAsset(asset);
+        setIsCheckinOpen(true);
+    };
+
     const handleModalSuccess = () => {
         setIsModalOpen(false);
+        setIsCheckoutOpen(false);
+        setIsCheckinOpen(false);
         getAssets(meta.current_page);
     };
 
@@ -204,7 +222,25 @@ export default function AssetTable() {
                                         {currencyFormat.format(asset.purchase_cost)}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div className="flex justify-end gap-2">
+                                        <div className="flex justify-end gap-2 items-center">
+                                            {/* Transaction Buttons */}
+                                            {asset.status_label?.type === 'deployable' && (
+                                                <button
+                                                    onClick={() => openCheckoutModal(asset)}
+                                                    className="bg-green-100 text-green-700 hover:bg-green-200 px-2 py-1 rounded text-xs font-semibold mr-2"
+                                                >
+                                                    Cấp phát
+                                                </button>
+                                            )}
+                                            {asset.status_label?.type === 'deployed' && (
+                                                <button
+                                                    onClick={() => openCheckinModal(asset)}
+                                                    className="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-2 py-1 rounded text-xs font-semibold mr-2"
+                                                >
+                                                    Thu hồi
+                                                </button>
+                                            )}
+
                                             <button
                                                 onClick={() => openEditModal(asset)}
                                                 className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
@@ -281,6 +317,22 @@ export default function AssetTable() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 asset={selectedAsset}
+                onSuccess={handleModalSuccess}
+            />
+
+            {/* Checkout Modal */}
+            <CheckoutModal
+                isOpen={isCheckoutOpen}
+                onClose={() => setIsCheckoutOpen(false)}
+                asset={transactionAsset}
+                onSuccess={handleModalSuccess}
+            />
+
+            {/* Checkin Modal */}
+            <CheckinModal
+                isOpen={isCheckinOpen}
+                onClose={() => setIsCheckinOpen(false)}
+                asset={transactionAsset}
                 onSuccess={handleModalSuccess}
             />
         </div>
