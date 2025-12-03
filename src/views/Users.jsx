@@ -1,7 +1,9 @@
+import UserTable from "./Users/UserTable";
+
 export default function Users() {
     return (
-        <div>
-            Users Page
+        <div className="p-4">
+            <UserTable />
         </div>
-    )
+    );
 }
