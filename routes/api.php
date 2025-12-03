@@ -9,8 +9,11 @@ use App\Http\Controllers\Api\AssetTransactionController;
 use App\Http\Controllers\Api\MaintenanceController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ImportController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
+
+Route::post('assets/import', [ImportController::class, 'import']);
 
 Route::prefix('v1')->group(function () {
 
