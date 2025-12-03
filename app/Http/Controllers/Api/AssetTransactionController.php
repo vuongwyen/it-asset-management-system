@@ -11,6 +11,7 @@ use App\Http\Requests\CheckinAssetRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AssetTransactionController extends Controller
 {
@@ -48,6 +49,7 @@ class AssetTransactionController extends Controller
             $history = AssetHistory::create([
                 'asset_id' => $asset->id,
                 'user_id' => $request->user_id, // Người nhận
+                'admin_id' => $request->user()->id, // Người thực hiện (Admin)
                 'action_type' => 'checkout',
                 'note' => $request->note, // Fix: note instead of notes
             ]);
@@ -94,6 +96,7 @@ class AssetTransactionController extends Controller
             $history = AssetHistory::create([
                 'asset_id' => $asset->id,
                 'user_id' => $previousUser, // Người trả
+                'admin_id' => $request->user()->id, // Người thực hiện (Admin)
                 'action_type' => 'checkin',
                 'note' => $request->note, // Fix: note instead of notes
             ]);
@@ -113,5 +116,28 @@ class AssetTransactionController extends Controller
                 'message' => 'Lỗi thu hồi: ' . $e->getMessage()
             ], 500);
         }
+    }
+    /**
+     * Xuất biên bản bàn giao (PDF)
+     */
+    public function exportPdf($history_id)
+    {
+        $history = AssetHistory::with(['asset.model', 'asset.statusLabel', 'user', 'admin'])->findOrFail($history_id);
+
+        if ($history->action_type !== 'checkout') {
+            return response()->json(['message' => 'Chỉ có thể xuất biên bản cho giao dịch cấp phát (checkout).'], 400);
+        }
+
+        $pdf = Pdf::loadView('exports.handover_protocol', [
+            'history' => $history,
+            'asset' => $history->asset,
+            'user' => $history->user,
+            'admin' => $history->admin,
+        ]);
+
+        // Set paper size and orientation if needed (default A4 portrait)
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->stream('bien-ban-ban-giao-' . $history->id . '.pdf');
     }
 }

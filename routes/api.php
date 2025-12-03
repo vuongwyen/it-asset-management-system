@@ -40,6 +40,7 @@ Route::prefix('v1')->group(function () {
 
         // Asset Transactions
         Route::post('assets/checkout', [AssetTransactionController::class, 'checkout']);
+        Route::get('assets/checkout/{history_id}/pdf', [AssetTransactionController::class, 'exportPdf']);
         Route::post('assets/checkin', [AssetTransactionController::class, 'checkin']);
 
         // Maintenance
