@@ -20,7 +20,9 @@ class DashboardController extends Controller
         $totalAssets = Asset::count();
 
         // 2. Total Cost
+        // 2. Total Cost & Value
         $totalCost = Asset::sum('purchase_cost');
+        $totalCurrentValue = Asset::sum('current_value');
 
         // 3. Total Licenses
         $totalLicenses = License::count();
@@ -47,6 +49,8 @@ class DashboardController extends Controller
         return response()->json([
             'total_assets' => $totalAssets,
             'total_cost' => $totalCost,
+            'total_current_value' => $totalCurrentValue,
+            'total_depreciation' => $totalCost - $totalCurrentValue,
             'total_licenses' => $totalLicenses,
             'assets_by_status' => $assetsByStatus,
             'recent_activity' => $recentActivity,

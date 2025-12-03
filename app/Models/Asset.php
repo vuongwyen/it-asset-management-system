@@ -21,6 +21,9 @@ class Asset extends Model
         'image',
         'assigned_to',
         'assigned_type', // Thêm cột này
+        'current_value',
+        'useful_life_months',
+        'residual_value',
     ];
 
     public function model()

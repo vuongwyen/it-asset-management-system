@@ -100,9 +100,12 @@ export default function Dashboard() {
                                     </div>
                                     <div className="ml-5 w-0 flex-1">
                                         <dl>
-                                            <dt className="text-sm font-medium text-gray-500 truncate">Total Cost</dt>
+                                            <dt className="text-sm font-medium text-gray-500 truncate">Total Value (Current)</dt>
                                             <dd>
-                                                <div className="text-lg font-medium text-gray-900">{currencyFormat.format(stats.total_cost)}</div>
+                                                <div className="text-lg font-medium text-gray-900">{currencyFormat.format(stats.total_current_value || 0)}</div>
+                                                <div className="text-xs text-red-500">
+                                                    Depreciated: {currencyFormat.format(stats.total_depreciation || 0)}
+                                                </div>
                                             </dd>
                                         </dl>
                                     </div>

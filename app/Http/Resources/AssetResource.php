@@ -24,6 +24,7 @@ class AssetResource extends JsonResource
             'supplier' => new SupplierResource($this->whenLoaded('supplier')),
             'purchase_date' => $this->purchase_date,
             'purchase_cost' => $this->purchase_cost,
+            'current_value' => $this->current_value,
             'warranty_months' => $this->warranty_months,
             'image_url' => $this->image ? Storage::url($this->image) : null,
             'created_at' => $this->created_at,
