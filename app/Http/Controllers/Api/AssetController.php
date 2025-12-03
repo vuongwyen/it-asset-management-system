@@ -12,11 +12,30 @@ use Illuminate\Support\Facades\Storage;
 
 class AssetController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $assets = Asset::with(['model', 'statusLabel', 'supplier', 'model.category', 'model.manufacturer'])
-            ->latest()
-            ->paginate(10);
+        $query = Asset::with(['model', 'statusLabel', 'supplier', 'model.category', 'model.manufacturer'])
+            ->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('asset_tag', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('status_id')) {
+            $query->where('status_id', $request->status_id);
+        }
+
+        if ($request->filled('category_id')) {
+            $query->whereHas('model', function ($q) use ($request) {
+                $q->where('category_id', $request->category_id);
+            });
+        }
+
+        $assets = $query->paginate(10);
         return AssetResource::collection($assets);
     }
 
