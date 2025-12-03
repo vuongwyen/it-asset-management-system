@@ -22,7 +22,7 @@ class StoreAssetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'asset_tag' => 'required|string|max:255|unique:assets,asset_tag',
+            'asset_tag' => 'nullable|string|max:255|unique:assets,asset_tag',
             'serial' => 'required|string|max:255|unique:assets,serial',
             'model_id' => 'required|exists:models,id',
             'status_id' => 'required|exists:status_labels,id',

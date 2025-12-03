@@ -24,8 +24,12 @@ class UserController extends Controller
 
         $user = User::create($data);
 
-        // Assign default role if needed, e.g., 'Employee'
-        // $user->assignRole('Employee');
+        // Assign role
+        if ($request->has('role')) {
+            $user->assignRole($request->role);
+        } else {
+            $user->assignRole('End-user');
+        }
 
         return response()->json([
             'message' => 'Tạo người dùng thành công!',
@@ -51,6 +55,11 @@ class UserController extends Controller
         }
 
         $user->update($data);
+
+        // Sync role
+        if ($request->has('role')) {
+            $user->syncRoles([$request->role]);
+        }
 
         return response()->json([
             'message' => 'Cập nhật thành công!',

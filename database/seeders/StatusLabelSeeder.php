@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\StatusLabel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class StatusLabelSeeder extends Seeder
 {
@@ -12,16 +15,31 @@ class StatusLabelSeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
+        StatusLabel::truncate();
+        Schema::enableForeignKeyConstraints();
+
         $statuses = [
-            ['name' => 'Ready to Deploy', 'type' => 'deployable'],
-            ['name' => 'Pending', 'type' => 'pending'],
-            ['name' => 'Archived', 'type' => 'archived'],
-            ['name' => 'Broken', 'type' => 'pending'],
-            ['name' => 'Lost', 'type' => 'archived'],
+            [
+                'name' => 'Sẵn sàng sử dụng',
+                'type' => 'deployable',
+            ],
+            [
+                'name' => 'Đang sử dụng',
+                'type' => 'deployable',
+            ],
+            [
+                'name' => 'Đang sửa chữa/Hỏng',
+                'type' => 'pending',
+            ],
+            [
+                'name' => 'Đã thanh lý/Mất',
+                'type' => 'archived',
+            ],
         ];
 
         foreach ($statuses as $status) {
-            \App\Models\StatusLabel::create($status);
+            StatusLabel::create($status);
         }
     }
 }

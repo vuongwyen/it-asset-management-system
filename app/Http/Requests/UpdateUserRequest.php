@@ -27,6 +27,7 @@ class UpdateUserRequest extends FormRequest
             'password' => 'nullable|string|min:8|confirmed',
             'department_id' => 'nullable|exists:departments,id',
             'location_id' => 'nullable|exists:locations,id',
+            'role' => 'nullable|string|exists:roles,name',
         ];
     }
 }

@@ -40,6 +40,8 @@ export default function DefaultLayout() {
                     <Link to="/manufacturers" className="block px-4 py-2 rounded hover:bg-slate-700 transition">Manufacturers</Link>
                     <Link to="/categories" className="block px-4 py-2 rounded hover:bg-slate-700 transition">Categories</Link>
                     <Link to="/status-labels" className="block px-4 py-2 rounded hover:bg-slate-700 transition">Status Labels</Link>
+                    <Link to="/roles" className="block px-4 py-2 rounded hover:bg-slate-700 transition">Roles</Link>
+                    <Link to="/departments" className="block px-4 py-2 rounded hover:bg-slate-700 transition">Departments</Link>
                 </nav>
             </aside>
             <div className="flex-1 flex flex-col overflow-hidden">

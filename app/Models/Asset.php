@@ -10,6 +10,16 @@ class Asset extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected static function booted()
+    {
+        static::creating(function ($asset) {
+            if (empty($asset->asset_tag)) {
+                $nextId = static::max('id') + 1;
+                $asset->asset_tag = 'AST-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
+            }
+        });
+    }
+
     protected $fillable = [
         'asset_tag',
         'serial',

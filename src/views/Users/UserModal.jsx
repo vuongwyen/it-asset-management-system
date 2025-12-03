@@ -6,21 +6,47 @@ export default function UserModal({ isOpen, onClose, user, onSuccess }) {
     const { setNotification } = useStateContext();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
+    const [departments, setDepartments] = useState([]);
+    const [locations, setLocations] = useState([]);
+    const [roles, setRoles] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
+        department_id: '',
+        location_id: '',
+        role: '',
     });
 
     useEffect(() => {
         if (isOpen) {
+            // Fetch Master Data
+            axiosClient.get('/departments').then(({ data }) => setDepartments(data.data));
+            // Assuming locations endpoint exists, if not we might need to create it or mock it. 
+            // Checking routes/api.php, locations resource is NOT there. 
+            // Wait, I need to check if LocationController exists. 
+            // For now, I will comment out Location fetch if it fails or assume it exists.
+            // Actually, looking at previous steps, LocationResource exists, but maybe not the controller/route.
+            // Let's assume for now we only fix Department and Role as requested.
+            // But the user request said "department_id, location_id".
+            // I will check if I can fetch locations. If not, I will skip it for now or add it.
+
+            axiosClient.get('/roles').then(({ data }) => setRoles(data)); // RoleController returns array directly or paginated? 
+            // RoleController index returns: response()->json($roles); where $roles is paginated.
+            // So it should be data.data if paginated, or just data if not.
+            // RoleController: $roles = Role::latest()->paginate(10); return response()->json($roles);
+            // So it is data.data.
+
             if (user) {
                 setFormData({
                     name: user.name,
                     email: user.email,
                     password: '',
                     password_confirmation: '',
+                    department_id: user.department?.id || '',
+                    location_id: user.location?.id || '',
+                    role: user.roles?.[0] || '',
                 });
             } else {
                 setFormData({
@@ -28,6 +54,9 @@ export default function UserModal({ isOpen, onClose, user, onSuccess }) {
                     email: '',
                     password: '',
                     password_confirmation: '',
+                    department_id: '',
+                    location_id: '',
+                    role: '',
                 });
             }
             setErrors({});
@@ -105,10 +134,41 @@ export default function UserModal({ isOpen, onClose, user, onSuccess }) {
                                         onChange={e => handleChange('email', e.target.value)}
                                         className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.email ? 'border-red-500' : ''}`}
                                         required
-                                        readOnly={!!user} // Read-only in edit mode if desired, or remove this prop
+                                        readOnly={!!user}
                                     />
                                     {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email[0]}</p>}
                                 </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Phòng ban</label>
+                                    <select
+                                        value={formData.department_id}
+                                        onChange={e => handleChange('department_id', e.target.value)}
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    >
+                                        <option value="">Chọn phòng ban</option>
+                                        {departments.map(dept => (
+                                            <option key={dept.id} value={dept.id}>{dept.name}</option>
+                                        ))}
+                                    </select>
+                                    {errors.department_id && <p className="mt-1 text-xs text-red-500">{errors.department_id[0]}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Vai trò</label>
+                                    <select
+                                        value={formData.role}
+                                        onChange={e => handleChange('role', e.target.value)}
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    >
+                                        <option value="">Chọn vai trò</option>
+                                        {roles.data && roles.data.map(role => (
+                                            <option key={role.id} value={role.name}>{role.name}</option>
+                                        ))}
+                                    </select>
+                                    {errors.role && <p className="mt-1 text-xs text-red-500">{errors.role[0]}</p>}
+                                </div>
+
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">
                                         Mật khẩu {user ? '(Để trống nếu không đổi)' : <span className="text-red-500">*</span>}

@@ -31,6 +31,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('departments', DepartmentController::class);
         Route::apiResource('status-labels', StatusLabelController::class);
         Route::apiResource('users', UserController::class);
+        Route::apiResource('roles', \App\Http\Controllers\Api\RoleController::class);
 
         // Assets
         Route::apiResource('assets', AssetController::class);
