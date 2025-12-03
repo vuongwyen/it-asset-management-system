@@ -21,7 +21,7 @@ class DeviceModelResource extends JsonResource
             'model_number' => $this->model_number,
             'manufacturer' => new ManufacturerResource($this->whenLoaded('manufacturer')),
             'category' => new CategoryResource($this->whenLoaded('category')),
-            'image_url' => $this->image ? Storage::url($this->image) : null,
+            'image_url' => $this->image ? asset('storage/' . $this->image) : null,
             'assets_count' => $this->whenCounted('assets'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

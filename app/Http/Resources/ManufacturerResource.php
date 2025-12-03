@@ -18,7 +18,7 @@ class ManufacturerResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'support_url' => $this->support_url,
-            'image_url' => $this->image ? \Illuminate\Support\Facades\Storage::url($this->image) : null,
+            'image_url' => $this->image ? asset('storage/' . $this->image) : null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

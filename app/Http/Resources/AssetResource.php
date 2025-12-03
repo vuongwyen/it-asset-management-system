@@ -26,7 +26,7 @@ class AssetResource extends JsonResource
             'purchase_cost' => $this->purchase_cost,
             'current_value' => $this->current_value,
             'warranty_months' => $this->warranty_months,
-            'image_url' => $this->image ? Storage::url($this->image) : null,
+            'image_url' => $this->image ? asset('storage/' . $this->image) : null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
