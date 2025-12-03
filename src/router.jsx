@@ -4,6 +4,8 @@ import Dashboard from "./views/Dashboard";
 import Users from "./views/Users";
 import Assets from "./views/Assets";
 import Manufacturers from "./views/Manufacturers";
+import Categories from "./views/Categories";
+import StatusLabels from "./views/StatusLabels";
 import NotFound from "./views/NotFound";
 import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
             {
                 path: '/manufacturers',
                 element: <Manufacturers />
+            },
+            {
+                path: '/categories',
+                element: <Categories />
+            },
+            {
+                path: '/status-labels',
+                element: <StatusLabels />
             },
         ]
     },
