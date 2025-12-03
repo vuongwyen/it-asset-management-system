@@ -6,6 +6,7 @@ import useDebounce from "../../hooks/useDebounce";
 import AssetModal from "./AssetModal";
 import CheckoutModal from "./CheckoutModal";
 import CheckinModal from "./CheckinModal";
+import ImportAssetModal from "./ImportAssetModal";
 
 export default function AssetTable() {
     const [assets, setAssets] = useState([]);
@@ -18,6 +19,7 @@ export default function AssetTable() {
 
     const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
     const [isCheckinOpen, setIsCheckinOpen] = useState(false);
+    const [isImportOpen, setIsImportOpen] = useState(false);
     const [transactionAsset, setTransactionAsset] = useState(null);
 
     // Filters state
@@ -108,6 +110,7 @@ export default function AssetTable() {
         setIsModalOpen(false);
         setIsCheckoutOpen(false);
         setIsCheckinOpen(false);
+        setIsImportOpen(false);
         getAssets(meta.current_page);
     };
 
@@ -121,15 +124,26 @@ export default function AssetTable() {
             {/* Header */}
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold text-gray-800">Quản lý Tài sản</h1>
-                <button
-                    onClick={openCreateModal}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                    Thêm mới
-                </button>
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => setIsImportOpen(true)}
+                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2 transition-colors"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                        Import Excel
+                    </button>
+                    <button
+                        onClick={openCreateModal}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        Thêm mới
+                    </button>
+                </div>
             </div>
 
             {/* Filter Bar */}
@@ -333,6 +347,12 @@ export default function AssetTable() {
                 isOpen={isCheckinOpen}
                 onClose={() => setIsCheckinOpen(false)}
                 asset={transactionAsset}
+                onSuccess={handleModalSuccess}
+            />
+
+            <ImportAssetModal
+                isOpen={isImportOpen}
+                onClose={() => setIsImportOpen(false)}
                 onSuccess={handleModalSuccess}
             />
         </div>
