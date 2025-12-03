@@ -33,10 +33,10 @@ export default function DefaultLayout() {
                 <div className="h-16 flex items-center justify-center text-xl font-bold border-b border-slate-700">
                     IT Asset Manager
                 </div>
-                <nav className="flex-1 px-4 py-6 space-y-2">
                     <Link to="/dashboard" className="block px-4 py-2 rounded hover:bg-slate-700 transition">Dashboard</Link>
                     <Link to="/assets" className="block px-4 py-2 rounded hover:bg-slate-700 transition">Assets</Link>
                     <Link to="/users" className="block px-4 py-2 rounded hover:bg-slate-700 transition">Users</Link>
+                    <Link to="/manufacturers" className="block px-4 py-2 rounded hover:bg-slate-700 transition">Manufacturers</Link>
                 </nav>
             </aside>
             <div className="flex-1 flex flex-col overflow-hidden">
@@ -59,6 +59,6 @@ export default function DefaultLayout() {
                     <Outlet />
                 </main>
             </div>
-        </div>
+        </div >
     );
 }
